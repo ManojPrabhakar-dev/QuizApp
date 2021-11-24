@@ -6,7 +6,7 @@ const Header = () => {
     <Box
       sx={{ bgcolor: "rgb(241, 190, 21)", textAlign: "center", boxShadow: 4 }}
     >
-      <Box sx={{ typography: "h3", py: 1 }}>React TODO</Box>
+      <Box sx={{ typography: "h3", py: 1 }}>React Quiz</Box>
     </Box>
   );
 };

@@ -10,7 +10,7 @@ function App() {
     <Box
       sx={{
         display: "grid",
-        gridTemplateRows: "1fr 1fr 5fr 1fr",
+        gridTemplateRows: "1fr 5fr 1fr",
         height: "100vh",
         bgcolor: "#e79f4cef",
       }}
