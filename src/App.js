@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
 import "./components/Header";
 import Header from "./components/Header";
@@ -15,19 +15,19 @@ function App() {
       <Box
         sx={{
           display: "grid",
-          gridTemplateRows: "1fr 5fr 1fr",
+          gridTemplateRows: "1fr 7fr 1fr",
           height: "100vh",
           bgcolor: "#e5dede",
         }}
       >
         <Header />
         <Router>
-          <div>
+          <Box sx={{ my: "auto" }}>
             <Routes>
               <Route path="/" exact element={<Settings />} />
               <Route path="/quiz" element={<Quiz />} />
             </Routes>
-          </div>
+          </Box>
         </Router>
         <Footer />
       </Box>
