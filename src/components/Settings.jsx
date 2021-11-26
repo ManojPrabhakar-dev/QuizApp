@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Button, Box, FormControl, Select, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { updateSettings } from "../actions/questionAction";
 
 const Settings = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [category, setCategory] = useState("");
   const [difficulty, setdifficulty] = useState("");
@@ -26,6 +29,7 @@ const Settings = () => {
   };
 
   function handleClick(e) {
+    dispatch(updateSettings(category, difficulty, limit));
     navigate("/quiz");
   }
   return (
@@ -50,7 +54,8 @@ const Settings = () => {
         >
           <Box
             sx={{
-              typography: "h4",
+              typography: "body1",
+              fontSize: 28,
               display: "flex",
               justifyContent: "center",
               my: 1,

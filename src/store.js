@@ -18,7 +18,7 @@ const initialState = {
   setting: {
     category: "",
     difficulty: "",
-    limit: 10,
+    limit: 5,
   },
 };
 
