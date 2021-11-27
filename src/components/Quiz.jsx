@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, Box } from "@mui/material";
+import { Button, Box, Backdrop, CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { updateScore, updateQuestionIndex } from "../actions/questionAction";
 import axios from "axios";
@@ -116,7 +116,28 @@ const Quiz = () => {
   return (
     <>
       {loading ? (
-        <p>Loading</p>
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={true}
+          // onClick={handleClose}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {/* color="inherit" */}
+            <CircularProgress />
+            <Box
+              sx={{ typography: "body1", fontweight: 400, fontSize: 16, mt: 3 }}
+            >
+              Fetching quiz questions from server. Please wait...
+            </Box>
+          </Box>
+        </Backdrop>
       ) : (
         <Box
           sx={{
