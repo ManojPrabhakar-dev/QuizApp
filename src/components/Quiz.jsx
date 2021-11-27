@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Button, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { updateScore, updateQuestionIndex } from "../actions/questionAction";
 import axios from "axios";
 
 const Quiz = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   function handleClick(e) {
     navigate("/");
   }
   const [loading, setLoading] = useState(true);
+  const [completed, setcompleted] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [answerSelected, setAnswerSelected] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -86,6 +89,7 @@ const Quiz = () => {
     console.log("selected index = " + event.target.id);
     setSelectedIndex(Number(event.target.id));
     setAnswerSelected(true);
+    let selIdx = Number(event.target.id);
     let idx = 0;
     for (const key in questions[questionIndex].correct_answers) {
       if (questions[questionIndex].correct_answers[key] === "true") {
@@ -95,6 +99,18 @@ const Quiz = () => {
       }
       idx++;
     }
+
+    if (idx === selIdx) {
+      dispatch(updateScore(score + 1));
+    }
+    setTimeout(() => {
+      setAnswerSelected(false);
+      if (questionIndex < questions.length - 1) {
+        dispatch(updateQuestionIndex(questionIndex + 1));
+      } else {
+        setcompleted(true);
+      }
+    }, 2000);
   }
 
   return (
@@ -112,41 +128,67 @@ const Quiz = () => {
             boxShadow: 3,
           }}
         >
-          <Box
-            sx={{
-              height: "26rem",
-              display: "grid",
-              gridTemplateRows: "1fr 5fr 1fr",
-            }}
-          >
+          {!completed ? (
             <Box
               sx={{
-                typography: "body1",
-                fontSize: 24,
-                display: "flex",
+                height: "26rem",
+                display: "grid",
+                gridTemplateRows: "1fr 5fr 1fr",
+              }}
+            >
+              <Box
+                sx={{
+                  typography: "body1",
+                  fontSize: 24,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  px: 1,
+                  mt: 1,
+                  textAlign: "center",
+                }}
+              >
+                {questions[questionIndex].question}
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-around",
+                  alignItems: "center",
+                }}
+              >
+                {generateOptions(questions[questionIndex].answers)}
+              </Box>
+              <Button variant="contained" onClick={handleClick}>
+                Score : {score}
+              </Button>
+            </Box>
+          ) : (
+            <Box
+              sx={{
+                dispaly: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                px: 1,
-                mt: 1,
                 textAlign: "center",
               }}
             >
-              {questions[questionIndex].question}
+              <h1>
+                Your Final Score : {score} / {questions.length}
+              </h1>
+              <Button
+                variant="outlined"
+                sx={{ mt: 4, mb: 2 }}
+                onClick={() => {
+                  dispatch(updateScore(0));
+                  dispatch(updateQuestionIndex(0));
+                  navigate("/");
+                }}
+              >
+                Try Again
+              </Button>
             </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-around",
-                alignItems: "center",
-              }}
-            >
-              {generateOptions(questions[questionIndex].answers)}
-            </Box>
-            <Button variant="contained" onClick={handleClick}>
-              Home
-            </Button>
-          </Box>
+          )}
         </Box>
       )}
     </>
